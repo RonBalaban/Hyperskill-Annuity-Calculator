@@ -4,7 +4,7 @@ Created on Tue Aug  4 21:37:58 2020
 
 @author: Rbala
 """
-
+# Stage 3
 import math
 
 print("""
@@ -75,6 +75,7 @@ elif choice == 'p':
 
 
 """
+Stage 2
 import math
 principal = float(input('Enter the credit principal: '))
 print("What do you want to calculate?
