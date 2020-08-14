@@ -1,0 +1,89 @@
+# Prior to Command-line Implementation
+
+import math
+
+choice = input("What type do you want? Say 'annuity' or 'diff': ")
+
+if choice == 'diff':
+    def find_Dm():  # mth differentiated payment
+        P = float(input('Enter the credit principal: \n'))
+        i = float(input('Enter the credit interest: \n')) / 1200
+        n = int(input('Enter the number of periods: \n'))
+        # If payment is given, print("Incorrect parameters"), since payment varies (Dm)
+        m = 1  # First period
+        total_paid = 0  # Used to check for overpayment
+        for _i in range(n):
+            Dm = math.ceil((P / n)  + i * (P - (P * (m - 1)) / n))
+            m += 1
+            total_paid += Dm
+            print (Dm)
+        if total_paid > P:
+            print(f"Overpayment = {int(total_paid - P)}")
+            
+    print(find_Dm())
+    
+    
+elif  choice == 'annuity':
+    print("""What do you want to calculate?
+type "n" for the count of months,
+type "a" for the annuity monthly payment,
+type "p" for the credit principal: """)
+    annchoice = input().lower()   
+    
+    def time_fun(yrs, mns):  
+        if mns == 12:  # If it says 12 months, make it 1 year instead
+            yrs += 1
+            mns -= 12  
+        mns_filler = ''  # Start as empty fillers, then adjust
+        yrs_filler = ''
+        and_filler = ''
+        if mns >= 1:  # Handles plurality
+            if mns > 1:
+                mns_filler = f' {mns} months'
+            else:
+                mns_filler = f' {mns} month'    
+        if yrs >= 1:  # # Handles plurality
+            if yrs > 1:
+                yrs_filler = f' {yrs} years'
+            else:
+                yrs_filler = f' {yrs} year'     
+        if mns >= 1 and yrs >= 1:  # If neither is missing, we need 'and'
+            and_filler= ' and'
+        return (f'You need{yrs_filler}{and_filler}{mns_filler} to repay this credit!')
+    
+    def find_n():
+        P = float(input('Enter the credit principal: \n'))  
+        A = float(input('Enter the monthly payment: \n'))  
+        i = float(input('Enter the credit interest: \n')) / 1200  # If user gives 12% Annual int. rate, we get i = 0.01
+        try:
+            n = math.log(A / (A - i * P), 1 + i)  # Count of periods
+            y = int(n // 12)  # Years in n
+            m = int(math.ceil(n) - (y * 12))  # months left after y years in n  
+            return time_fun(y, m)  # Used to convert periods into years and months
+        except ValueError:
+            print('Cannot do logs of negative numbers')
+            
+    def find_a():
+        P = float(input('Enter the credit principal: \n'))  
+        n = float(input('Enter the number of periods: \n'))  
+        i = float(input('Enter the credit interest: \n')) / 1200  
+        A = math.ceil(P * (i *(1 + i) ** n) / ((1 + i) ** n - 1))
+        return f'Your annuity payment = {A}!' 
+    
+    def find_p():
+        A = float(input('Enter the monthly payment: \n'))  
+        n = float(input('Enter the number of periods: \n'))
+        i = float(input('Enter the credit interest: \n')) / 1200  
+        P = round(A / ((i * (1 + i) ** n) / ((1 + i) ** n - 1)), )
+        return f'Your credit principal = {P}!'
+    
+    if annchoice == 'n':
+        print(find_n())    
+    elif annchoice == 'a':
+        print(find_a())    
+    elif annchoice == 'p':
+        print(find_p())
+
+
+else:
+    print("Incorrect parameters")
